@@ -7,7 +7,19 @@
   (is (>= (count facts/catalog) 3))
   (is (contains? facts/catalog :USA))
   (is (contains? facts/catalog :ITA))
-  (is (contains? facts/catalog :CAN)))
+  (is (contains? facts/catalog :CAN))
+  (is (contains? facts/catalog :GBR)))
+
+(deftest gbr-requirements
+  "UK jurisdiction has a genuinely different shape from USA/ITA/CAN: a
+  fur-farming PROHIBITION (production ban), not just labeling/sourcing."
+  (let [reqs (facts/requirement-citations :GBR)]
+    (is (map? reqs))
+    (is (contains? reqs :fur-farming-prohibition))
+    (is (contains? reqs :non-textile-animal-origin-labeling))
+    (doseq [[_key req] reqs]
+      (is (:spec-basis req) (str "Requirement should have spec-basis: " _key))
+      (is (seq (:evidence req)) (str "Requirement should list evidence checklist: " _key)))))
 
 (deftest jurisdiction-coverage-honest
   "Coverage reporting should be honest about scope."
@@ -51,7 +63,12 @@
   (testing "Canada complete requirements"
     (let [checklist {:garment-label true :fur-content-disclosure true
                      :wage-record true :safety-training true}]
-      (is (facts/required-evidence-satisfied? :CAN checklist)))))
+      (is (facts/required-evidence-satisfied? :CAN checklist))))
+
+  (testing "UK complete requirements"
+    (let [checklist {:no-domestic-fur-farming-attestation true
+                     :garment-label true :animal-origin-disclosure true}]
+      (is (facts/required-evidence-satisfied? :GBR checklist)))))
 
 (deftest spec-basis-citations
   "All spec-basis citations should be strings (official references)."
