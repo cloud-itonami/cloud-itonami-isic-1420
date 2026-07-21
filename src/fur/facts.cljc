@@ -3,6 +3,11 @@
   requirements. Every jurisdiction in this catalog is backed by an official
   spec-basis. NEVER invent requirements without an official citation.
 
+  :GBR is a genuinely different shape from USA/ITA/CAN: alongside labeling,
+  the UK prohibits domestic fur farming outright (a production-side ban),
+  and its labeling requirement is a retained-EU-law citation shared
+  verbatim with :ITA's Article 12.
+
   This is deliberately a starting catalog (honest coverage reporting) to
   prove the governor contract end-to-end, not a claim of global coverage.
   Adding a jurisdiction is additive: one map entry citing a real official
@@ -57,7 +62,28 @@
      :labor-standards {:description "Federal labour-standards compliance for plant personnel"
                       :required true
                       :spec-basis "Canada Labour Code, R.S.C. 1985, c. L-2"
-                      :evidence [:wage-record :safety-training]}}}})
+                      :evidence [:wage-record :safety-training]}}}
+
+   ;; United Kingdom -- genuinely different regulatory story from USA/ITA/CAN,
+   ;; WebFetch-verified 2026-07-21 directly against legislation.gov.uk (The
+   ;; National Archives' official UK legislation site): the UK does not just
+   ;; regulate fur-garment labeling/sourcing, it PROHIBITS domestic fur
+   ;; farming outright (a production-side ban, not a labeling rule), while
+   ;; separately retaining the same EU Article 12 labeling regulation ITA
+   ;; cites -- confirmed still current UK law post-Brexit (legislation.gov.uk
+   ;; hosts retained EU law directly; this specific regulation has not been
+   ;; superseded by new UK legislation).
+   :GBR
+   {:name "United Kingdom"
+    :requirements
+    {:fur-farming-prohibition {:description "Keeping animals solely or primarily for slaughter for the value of their fur is a criminal offence (a domestic-production ban, not a labeling/sourcing rule like the other jurisdictions in this catalog)"
+                              :required true
+                              :spec-basis "Fur Farming (Prohibition) Act 2000, c. 33, s. 1 (Offences relating to fur farming); in force in England and Wales from 1 January 2003"
+                              :evidence [:no-domestic-fur-farming-attestation]}
+     :non-textile-animal-origin-labeling {:description "Garments containing fur parts must bear the mandatory disclosure phrase on the label -- the same EU regulation ITA cites, retained as UK law post-Brexit"
+                                          :required true
+                                          :spec-basis "Regulation (EU) No 1007/2011, Article 12, retained/incorporated as UK law (legislation.gov.uk/eur/2011/1007/article/12) -- not superseded by any new UK legislation as of this iteration's research"
+                                          :evidence [:garment-label :animal-origin-disclosure]}}}})
 
 ;; ----------------------------- coverage reporting (honest) -----------------------------
 
