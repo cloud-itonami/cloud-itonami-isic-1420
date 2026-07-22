@@ -8,6 +8,14 @@
   and its labeling requirement is a retained-EU-law citation shared
   verbatim with :ITA's Article 12.
 
+  :NLD adds a second fur-farming-prohibition jurisdiction, but via a
+  completed PHASE-OUT rather than GBR's clean immediate ban: the Wet
+  verbod pelsdierhouderij (2013) originally allowed existing mink farms
+  to continue under a transitional exemption, then a 2020 amendment
+  accelerated that exemption's end date. Citations verified 2026-07-22
+  directly against wetten.overheid.nl (the Dutch government's own
+  official consolidated-legislation portal, BWBR0032739).
+
   This is deliberately a starting catalog (honest coverage reporting) to
   prove the governor contract end-to-end, not a claim of global coverage.
   Adding a jurisdiction is additive: one map entry citing a real official
@@ -83,6 +91,28 @@
      :non-textile-animal-origin-labeling {:description "Garments containing fur parts must bear the mandatory disclosure phrase on the label -- the same EU regulation ITA cites, retained as UK law post-Brexit"
                                           :required true
                                           :spec-basis "Regulation (EU) No 1007/2011, Article 12, retained/incorporated as UK law (legislation.gov.uk/eur/2011/1007/article/12) -- not superseded by any new UK legislation as of this iteration's research"
+                                          :evidence [:garment-label :animal-origin-disclosure]}}}
+
+   ;; Netherlands -- WebFetch/curl-verified 2026-07-22 directly against
+   ;; wetten.overheid.nl (BWBR0032739, the Dutch government's own official
+   ;; consolidated-legislation portal). A second fur-farming-prohibition
+   ;; jurisdiction alongside GBR, but a completed PHASE-OUT rather than a
+   ;; clean immediate ban: the original 2013 law allowed existing mink
+   ;; farms to continue under a transitional exemption (Art. 3-4), then a
+   ;; 16 December 2020 amendment (Stb. 2020, 555) accelerated that
+   ;; exemption's end date -- confirmed via the amending law's own
+   ;; cross-reference text in Art. 4 ("vervroegde beëindiging van de
+   ;; pelsdierhouderij", accelerated termination of fur farming).
+   :NLD
+   {:name "Netherlands"
+    :requirements
+    {:fur-farming-prohibition {:description "Keeping, killing, or causing to be killed of a fur-bearing animal is prohibited (a domestic-production ban, like GBR's, following a completed transitional phase-out for pre-existing mink farms)"
+                              :required true
+                              :spec-basis "Wet verbod pelsdierhouderij (Wet van 4 januari 2013), Art. 2: 'Het houden, doden of doen doden van een pelsdier is verboden' -- transitional exemption for existing farms (Art. 3-4) accelerated to a full end by the Wet van 16 december 2020 tot wijziging van de Wet verbod pelsdierhouderij in verband met een vervroegde beëindiging van de pelsdierhouderij (Stb. 2020, 555)"
+                              :evidence [:no-domestic-fur-farming-attestation]}
+     :non-textile-animal-origin-labeling {:description "Garments containing fur parts must bear the mandatory disclosure phrase on the label -- the same EU regulation ITA/GBR cite"
+                                          :required true
+                                          :spec-basis "Regulation (EU) No 1007/2011, Article 12 (directly applicable EU law in the Netherlands)"
                                           :evidence [:garment-label :animal-origin-disclosure]}}}})
 
 ;; ----------------------------- coverage reporting (honest) -----------------------------

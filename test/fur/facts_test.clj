@@ -8,7 +8,8 @@
   (is (contains? facts/catalog :USA))
   (is (contains? facts/catalog :ITA))
   (is (contains? facts/catalog :CAN))
-  (is (contains? facts/catalog :GBR)))
+  (is (contains? facts/catalog :GBR))
+  (is (contains? facts/catalog :NLD)))
 
 (deftest gbr-requirements
   "UK jurisdiction has a genuinely different shape from USA/ITA/CAN: a
@@ -68,7 +69,12 @@
   (testing "UK complete requirements"
     (let [checklist {:no-domestic-fur-farming-attestation true
                      :garment-label true :animal-origin-disclosure true}]
-      (is (facts/required-evidence-satisfied? :GBR checklist)))))
+      (is (facts/required-evidence-satisfied? :GBR checklist))))
+
+  (testing "Netherlands complete requirements"
+    (let [checklist {:no-domestic-fur-farming-attestation true
+                     :garment-label true :animal-origin-disclosure true}]
+      (is (facts/required-evidence-satisfied? :NLD checklist)))))
 
 (deftest spec-basis-citations
   "All spec-basis citations should be strings (official references)."
