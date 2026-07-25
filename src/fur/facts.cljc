@@ -26,7 +26,40 @@
 
 (def catalog
   "Per-jurisdiction fur-garment manufacturing compliance requirements with
-  official spec-basis citations."
+  official spec-basis citations.
+
+  CITATION PROVENANCE (2026-07-25). This namespace names eight legal
+  instruments and, until now, carried no fetchable source for any of them --
+  the highest-risk citation shape in this fleet, because it reads as grounded
+  so nobody re-checks it. Four are now verified against the issuing body's own
+  text and carry URLs in `verified-instruments`; the other four were NOT
+  fetched in this pass and are listed in `unverified-instruments` rather than
+  left to look equally solid.
+
+  VERIFIED (quotes taken from the fetched text, re-grepped against raw markup):
+
+    - Regulation (EU) No 1007/2011 Article 12, cited by :ITA/:GBR/:NLD for the
+      animal-origin disclosure, IS the right article. Verbatim: \"Article 12
+      Textile products containing non-textile parts of animal origin 1. The
+      presence of non-textile parts of animal origin in textile products shall
+      be indicated by using the phrase 'Contains non-textile parts of animal
+      origin' on the labelling or marking of products containing such parts
+      whenever they are made available on the market.\" The mandated phrase is
+      now recorded verbatim rather than described as \"the mandatory disclosure
+      phrase\".
+    - Council Regulation (EC) No 338/97 -- title confirmed word for word:
+      \"protection of species of wild fauna and flora by regulating trade
+      therein\".
+    - 16 CFR Part 301 (FTC Fur Rules) exists as cited; §301.1 is \"Terms
+      defined\".
+    - 16 U.S.C. § 1538 is \"Prohibited acts\" of the Endangered Species Act, as
+      cited.
+
+  NOT FETCHED IN THIS PASS -- named here but unverified: 15 U.S.C. § 69 (Fur
+  Products Labeling Act), 50 CFR Part 23 (CITES implementing regulations),
+  29 CFR § 516 (FLSA recordkeeping) and 29 CFR Part 1910 Subpart A (OSHA).
+  Their govinfo granule paths did not resolve on the attempts made, and
+  guessing a URL that returns 404 would be worse than saying so."
   {
    :USA
    {:name "United States"
@@ -116,6 +149,74 @@
                                           :evidence [:garment-label :animal-origin-disclosure]}}}})
 
 ;; ----------------------------- coverage reporting (honest) -----------------------------
+
+(def verified-instruments
+  "Legal instruments this catalog cites that were checked against the issuing
+  body's own text on 2026-07-25, each with the URL the text came from."
+  {"Regulation (EU) No 1007/2011 Article 12"
+   {:provenance "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32011R1007"
+    :verbatim (str "Article 12 Textile products containing non-textile parts of "
+                   "animal origin 1. The presence of non-textile parts of animal "
+                   "origin in textile products shall be indicated by using the "
+                   "phrase 'Contains non-textile parts of animal origin' on the "
+                   "labelling or marking of products containing such parts "
+                   "whenever they are made available on the market.")
+    :mandated-phrase "Contains non-textile parts of animal origin"
+    :cited-by [:ITA :GBR :NLD]}
+
+   "Council Regulation (EC) No 338/97"
+   {:provenance "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:31997R0338"
+    :verbatim "protection of species of wild fauna and flora by regulating trade therein"
+    :cited-by [:ITA]}
+
+   "16 CFR Part 301 (FTC Fur Rules)"
+   {:provenance "https://www.govinfo.gov/content/pkg/CFR-2024-title16-vol1/xml/CFR-2024-title16-vol1-sec301-1.xml"
+    :verbatim "Terms defined"          ; §301.1's own subject heading
+    :cited-by [:USA]}
+
+   "16 U.S.C. § 1538 (Endangered Species Act)"
+   {:provenance "https://www.govinfo.gov/content/pkg/USCODE-2023-title16/html/USCODE-2023-title16-chap35-sec1538.htm"
+    :verbatim "Prohibited acts"
+    :cited-by [:USA]}})
+
+(def unverified-instruments
+  "Instruments this catalog names but which were NOT fetched in this pass.
+  Listed explicitly so `citation-coverage` cannot report the namespace as fully
+  grounded. Guessing a URL that 404s would be worse than recording the gap."
+  {"15 U.S.C. § 69 (Fur Products Labeling Act)" :govinfo-granule-path-unresolved
+   "50 CFR Part 23 (CITES implementing regulations)" :not-fetched
+   "29 CFR § 516 (FLSA recordkeeping)" :not-fetched
+   "29 CFR Part 1910 Subpart A (OSHA)" :not-fetched})
+
+(defn instrument-verified?
+  "Was `instrument` checked against the issuing body's own text?"
+  [instrument]
+  (contains? verified-instruments instrument))
+
+(defn mandated-animal-origin-phrase
+  "The exact phrase Reg. (EU) 1007/2011 Art. 12 requires on the label. Returned
+  from the verified record rather than retyped, so it cannot drift."
+  []
+  (get-in verified-instruments
+          ["Regulation (EU) No 1007/2011 Article 12" :mandated-phrase]))
+
+(defn citation-coverage
+  "Honest split between what was verified and what is only named."
+  []
+  {:verified (count verified-instruments)
+   :unverified (count unverified-instruments)
+   :verified-instruments (vec (sort (keys verified-instruments)))
+   :unverified-instruments (vec (sort (keys unverified-instruments)))
+   :all-verified-carry-provenance?
+   (every? (fn [[_ v]] (some? (re-find #"^https?://" (:provenance v))))
+           verified-instruments)
+   :note (str "cloud-itonami-isic-1420: " (count verified-instruments) "/"
+              (+ (count verified-instruments) (count unverified-instruments))
+              " named instruments checked against the issuing body's text. "
+              "This namespace previously named eight instruments with no "
+              "fetchable source for any of them -- the shape that reads as "
+              "grounded and therefore never gets re-checked. The four "
+              "unverified ones are named, not silently dropped.")})
 
 (defn coverage
   "Report what fraction of worldwide jurisdictions have official spec-basis

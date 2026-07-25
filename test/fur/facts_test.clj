@@ -83,3 +83,44 @@
       (doseq [[_req-key req-spec] reqs]
         (is (string? (:spec-basis req-spec))
           (str "Spec-basis should be a string in " _jurisdiction "/" _req-key))))))
+
+;; ───────── Named-vs-verified citations (2026-07-25) ─────────
+
+(deftest verified-instruments-all-carry-a-real-url
+  (let [c (facts/citation-coverage)]
+    (is (= 4 (:verified c)))
+    (is (= 4 (:unverified c)))
+    (is (true? (:all-verified-carry-provenance? c))))
+  (doseq [[name rec] facts/verified-instruments]
+    (is (re-find #"^https?://" (:provenance rec)) (str name " needs a real URL"))
+    (is (seq (:verbatim rec)) (str name " needs text taken from the source"))))
+
+(deftest unverified-instruments-are-named-not-hidden
+  (testing "naming a statute without a source is the risky shape; say so"
+    (is (contains? facts/unverified-instruments
+                   "15 U.S.C. § 69 (Fur Products Labeling Act)"))
+    (is (contains? facts/unverified-instruments
+                   "50 CFR Part 23 (CITES implementing regulations)"))
+    (is (false? (facts/instrument-verified?
+                 "15 U.S.C. § 69 (Fur Products Labeling Act)")))
+    (is (true? (facts/instrument-verified?
+                "Regulation (EU) No 1007/2011 Article 12")))))
+
+(deftest eu-1007-2011-article-12-is-the-right-article
+  (let [rec (get facts/verified-instruments "Regulation (EU) No 1007/2011 Article 12")]
+    (is (re-find #"non-textile parts of animal origin" (:verbatim rec)))
+    (is (= "Contains non-textile parts of animal origin"
+           (facts/mandated-animal-origin-phrase))
+        "the phrase the regulation mandates, recorded verbatim rather than described")
+    (is (= [:ITA :GBR :NLD] (:cited-by rec)))))
+
+(deftest ec-338-97-title-matches-the-source
+  (let [rec (get facts/verified-instruments "Council Regulation (EC) No 338/97")]
+    (is (= "protection of species of wild fauna and flora by regulating trade therein"
+           (:verbatim rec)))))
+
+(deftest us-instruments-resolve-to-govinfo
+  (doseq [n ["16 CFR Part 301 (FTC Fur Rules)"
+             "16 U.S.C. § 1538 (Endangered Species Act)"]]
+    (is (re-find #"govinfo\.gov" (:provenance (get facts/verified-instruments n)))
+        (str n " must cite the official US source"))))
