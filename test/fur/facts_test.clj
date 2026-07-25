@@ -2,8 +2,7 @@
   (:require [clojure.test :refer [deftest is testing]]
             [fur.facts :as facts]))
 
-(deftest catalog-has-jurisdictions
-  "Catalog should define at least 3 jurisdictions with official spec-basis."
+(deftest ^{:doc "Catalog should define at least 3 jurisdictions with official spec-basis."} catalog-has-jurisdictions
   (is (>= (count facts/catalog) 3))
   (is (contains? facts/catalog :USA))
   (is (contains? facts/catalog :ITA))
@@ -11,9 +10,8 @@
   (is (contains? facts/catalog :GBR))
   (is (contains? facts/catalog :NLD)))
 
-(deftest gbr-requirements
-  "UK jurisdiction has a genuinely different shape from USA/ITA/CAN: a
-  fur-farming PROHIBITION (production ban), not just labeling/sourcing."
+(deftest ^{:doc "UK jurisdiction has a genuinely different shape from USA/ITA/CAN: a
+  fur-farming PROHIBITION (production ban), not just labeling/sourcing."} gbr-requirements
   (let [reqs (facts/requirement-citations :GBR)]
     (is (map? reqs))
     (is (contains? reqs :fur-farming-prohibition))
@@ -22,8 +20,7 @@
       (is (:spec-basis req) (str "Requirement should have spec-basis: " _key))
       (is (seq (:evidence req)) (str "Requirement should list evidence checklist: " _key)))))
 
-(deftest jurisdiction-coverage-honest
-  "Coverage reporting should be honest about scope."
+(deftest ^{:doc "Coverage reporting should be honest about scope."} jurisdiction-coverage-honest
   (let [cov (facts/coverage)]
     (is (map? cov))
     (is (>= (:implemented cov) 3))
@@ -31,8 +28,7 @@
     (is (> (:coverage-pct cov) 0))
     (is (contains? cov :note))))
 
-(deftest usa-requirements
-  "USA jurisdiction should have official spec-basis for all requirements."
+(deftest ^{:doc "USA jurisdiction should have official spec-basis for all requirements."} usa-requirements
   (let [reqs (facts/requirement-citations :USA)]
     (is (map? reqs))
     (is (contains? reqs :fur-labeling))
@@ -43,8 +39,7 @@
       (is (:spec-basis req) (str "Requirement should have spec-basis: " _key))
       (is (seq (:evidence req)) (str "Requirement should list evidence checklist: " _key)))))
 
-(deftest evidence-satisfaction
-  "Test jurisdiction-specific evidence checklist satisfaction."
+(deftest ^{:doc "Test jurisdiction-specific evidence checklist satisfaction."} evidence-satisfaction
   (testing "USA complete fur-labeling + species-sourcing + labor requirements"
     (let [complete {:garment-label true :species-name-verified true :country-of-origin-marking true
                     :cites-permit true :species-origin-cert true
@@ -76,8 +71,7 @@
                      :garment-label true :animal-origin-disclosure true}]
       (is (facts/required-evidence-satisfied? :NLD checklist)))))
 
-(deftest spec-basis-citations
-  "All spec-basis citations should be strings (official references)."
+(deftest ^{:doc "All spec-basis citations should be strings (official references)."} spec-basis-citations
   (doseq [[_jurisdiction jurisdiction-data] facts/catalog]
     (let [reqs (:requirements jurisdiction-data)]
       (doseq [[_req-key req-spec] reqs]
