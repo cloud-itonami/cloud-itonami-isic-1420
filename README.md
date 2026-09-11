@@ -144,13 +144,13 @@ requirements to make coverage look bigger.
 
 | File | Role |
 |---|---|
-| `src/fur/store.cljc` | In-memory store: plants, production batches, shipments, maintenance log + verification guards + the shipment→batch indirection resolver |
-| `src/fur/facts.cljc` | Per-jurisdiction fur-labeling/species-sourcing/labor-standards catalog with official spec-basis citations, honest coverage reporting |
-| `src/fur/advisor.cljc` | Fur-Garment Operations Advisor -- `mock-advisor`; batch-log/maintenance/safety-concern/shipment proposals |
-| `src/fur/registry.cljc` | The closed `allowed-ops` allowlist + hard-invariant helpers + proposal draft constructors |
-| `src/fur/governor.cljc` | **Fur Governor** -- 6 HARD checks (spec-basis · effect-not-propose · op-not-allowlisted · plant-not-verified · batch-not-verified · process-control-forbidden) + 1 unconditional escalation (safety-concern) + 1 soft (confidence/actuation gate) |
-| `src/fur/phase.cljc` | Phase table -- advisor → governor → hold/complete, built on the langgraph-clj StateGraph shape |
-| `src/fur/sim.cljc` | demo driver |
+| `src/fur/store.cljk` | In-memory store: plants, production batches, shipments, maintenance log + verification guards + the shipment→batch indirection resolver |
+| `src/fur/facts.cljk` | Per-jurisdiction fur-labeling/species-sourcing/labor-standards catalog with official spec-basis citations, honest coverage reporting |
+| `src/fur/advisor.cljk` | Fur-Garment Operations Advisor -- `mock-advisor`; batch-log/maintenance/safety-concern/shipment proposals |
+| `src/fur/registry.cljk` | The closed `allowed-ops` allowlist + hard-invariant helpers + proposal draft constructors |
+| `src/fur/governor.cljk` | **Fur Governor** -- 6 HARD checks (spec-basis · effect-not-propose · op-not-allowlisted · plant-not-verified · batch-not-verified · process-control-forbidden) + 1 unconditional escalation (safety-concern) + 1 soft (confidence/actuation gate) |
+| `src/fur/phase.cljk` | Phase table -- advisor → governor → hold/complete, built on the langgraph-clj StateGraph shape |
+| `src/fur/sim.cljk` | demo driver |
 | `test/fur/*_test.clj` | governor contract · phase invariants · store parity · facts coverage |
 
 ## Capability layer
