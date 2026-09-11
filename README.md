@@ -109,11 +109,11 @@ approved past; a clean shipment proposal still always routes to a human
 ## Run
 
 ```bash
-clojure -M:dev:run     # walk six scenarios (clean batch/maintenance, always-escalating
+kbb -M:dev:run     # walk six scenarios (clean batch/maintenance, always-escalating
                         # concern, high-stakes clean shipment, unallowlisted-op block,
                         # non-:propose-effect block) through the actor
-clojure -M:test         # governor contract · phase invariants · store parity · facts coverage
-clojure -M:lint          # clj-kondo (errors fail; CI mirrors this)
+kbb -M:test         # governor contract · phase invariants · store parity · facts coverage
+kbb -M:lint          # clj-kondo (errors fail; CI mirrors this)
 ```
 
 ## Jurisdiction coverage (honest)

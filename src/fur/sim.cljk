@@ -1,7 +1,7 @@
 (ns fur.sim
   "Simulation harness for Fur-Garment Manufacturing Plant Operations
   Coordinator actor.
-  Run with: clojure -M:dev:run"
+  Run with: kbb -M:dev:run"
   (:require [fur.advisor :as advisor]
             [fur.governor :as governor]
             [fur.store :as store]))
