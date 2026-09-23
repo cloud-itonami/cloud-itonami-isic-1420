@@ -1,5 +1,5 @@
 (ns fur.facts-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [fur.facts :as facts]))
 
 (deftest ^{:doc "Catalog should define at least 3 jurisdictions with official spec-basis."} catalog-has-jurisdictions
