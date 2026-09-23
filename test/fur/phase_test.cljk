@@ -1,5 +1,5 @@
 (ns fur.phase-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [fur.phase :as phase]))
 
 (deftest ^{:doc "Phase table should define correct graph structure."} phase-table-structure

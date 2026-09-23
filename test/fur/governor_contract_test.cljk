@@ -1,5 +1,5 @@
 (ns fur.governor-contract-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [fur.store :as store]
             [fur.advisor :as advisor]
             [fur.governor :as governor]
