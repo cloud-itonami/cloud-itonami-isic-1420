@@ -1,0 +1,33 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a plant-floor operator or a robotics-assisted
+;; cutting/sewing station performs the cutting, matching and sewing of dressed
+;; fur pelts into coats, trims and accessories. Its physical work here: hanging
+;; finished fur coats on the garment rail, and cooling coats down in the fur
+;; cold-storage vault after they come in.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-1420"
+ :cases
+ [{:id :coat-to-rail
+   :kind :manipulator
+   :procedure "arm lifts a finished fur coat on its hanger from the finishing table onto the high garment rail"
+   :params {:l1-m 0.50 :l2-m 0.45 :m1-kg 5.0 :m2-kg 3.5
+            :from [0.60 0.10] :to [0.20 0.85] :duration-s 2.0 :steps 400}
+   :sweep {:param :payload-kg :values [1.0 2.0 3.0 4.0 5.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 50.0 :basis "estimate: continuous shoulder torque of a light collaborative arm (~5 kg class)"}
+   :boundary {:lo 0.2 :hi 30.0}}
+  {:id :fur-cold-storage-pulldown
+   :kind :thermal
+   :procedure "a fur coat that arrives at room temperature is hung in the cold-storage vault; air at 4 C on both faces cools it until its middle falls below 10 C; swept :thickness-m is HALF the thickness (heated face to mid-plane), mid-plane adiabatic by symmetry, so the back face is the middle"
+   :params {:conductivity-w-mk 0.04 :density-kg-m3 150.0 :specific-heat-j-kgk 1500.0
+            :t0-c 25.0 :t-hot-c 4.0 :h-front-w-m2k 8.0 :t-back-ambient-c 4.0 :h-back-w-m2k 0.0
+            :threshold-c 10.0 :threshold-direction :falling :duration-s 21600.0 :nodes 11}
+   :sweep {:param :thickness-m :values [0.005 0.01 0.015 0.025 0.04]}
+   :quantity :time-to-threshold-s
+   :limit {:max 7200.0 :basis "estimate: a coat should be below 10 C within 2 hours of entering the vault"}
+   :boundary {:lo 0.0025 :hi 0.075}}]}
